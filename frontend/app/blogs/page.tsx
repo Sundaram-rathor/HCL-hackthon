@@ -23,7 +23,7 @@ export default function HealthPage() {
 
   return (
     <div className=" mx-auto p-6 bg-white w-full h-screen">
-      <h2 className="text-2xl font-bold mb-6">Latest Health Information</h2>
+      <h2 className="text-2xl font-bold mb-6 ">Latest Health Information</h2>
 
       <div className="grid gap-6">
         {healthData.map((item, index) => (
