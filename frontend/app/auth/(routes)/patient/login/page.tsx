@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
   const [email, setEmail] = useState("");
@@ -13,10 +14,11 @@ export default function AuthPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
+    const router = useRouter();
 
     try {
       const res = await fetch(
-        ("https://hcl-hackthon.vercel.app/") + "/api/patient/login",
+        ("http://localhost:8000") + "/api/patient/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -34,6 +36,7 @@ export default function AuthPage() {
 
       alert("Login successful!");
       setLoading(false);
+      router.push("/")
 
       // TODO: dashboard redirect
       // router.push("/dashboard");
@@ -85,6 +88,7 @@ export default function AuthPage() {
                   type="email"
                   className="mt-1 w-full outline-none bg-transparent text-indigo-600 font-medium"
                   placeholder="you@example.com"
+                  pattern="^[a-zA-z0-9]+@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -117,7 +121,7 @@ export default function AuthPage() {
               </button>
 
               <Link
-                href="/auth/user/register"
+                href="/auth/patient/register"
                 className="px-5 py-2 border border-indigo-400 text-indigo-600 rounded"
               >
                 Sign Up

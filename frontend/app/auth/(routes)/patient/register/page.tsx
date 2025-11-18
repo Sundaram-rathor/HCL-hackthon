@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ export default function AuthPage() {
   const [fullName, setfullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -17,7 +19,7 @@ export default function AuthPage() {
     setError("");
 
     try {
-      const res = await fetch(("https://hcl-hackthon.vercel.app/") + "/api/patient/signup", {
+      const res = await fetch(("http://localhost:8000") + "/api/patient/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, fullName }),
@@ -33,6 +35,7 @@ export default function AuthPage() {
 
       alert("Login successful!");
       setLoading(false);
+      router.push('/auth/patient/login')
 
       // TODO: Redirect to dashboard
       // router.push("/dashboard");
@@ -45,10 +48,10 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      
+
       {/* Left section */}
       <aside className="w-full md:w-1/2 bg-white px-6 sm:px-12 md:px-20 py-12 flex flex-col justify-between">
-        
+
         <header>
           <div className="text-indigo-600 font-semibold text-xl">Soul</div>
         </header>
@@ -61,7 +64,7 @@ export default function AuthPage() {
           <p className="mt-4 text-gray-500">Register your account to get started.</p>
 
           <form className="mt-6" onSubmit={handleSubmit}>
-            
+
             <div className="mb-1 text-indigo-500 font-medium flex items-center">
               <svg
                 className="w-4 h-4 mr-2"
@@ -96,6 +99,7 @@ export default function AuthPage() {
                   type="email"
                   className="mt-1 w-full outline-none text-indigo-600 font-medium bg-transparent"
                   placeholder="you@example.com"
+                  pattern="^[a-zA-z0-9]+@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -120,7 +124,7 @@ export default function AuthPage() {
               <p className="text-red-500 text-sm mt-3">{error}</p>
             )}
 
-           
+
 
             <div className="mt-6 flex items-center gap-4">
               <button
@@ -131,12 +135,12 @@ export default function AuthPage() {
                 {loading ? "Signing up..." : "Sign Up"}
               </button>
 
-              <Link href="/auth/user/login" className="px-5 py-2 border border-indigo-400 text-indigo-600 rounded">
+              <Link href="/auth/patient/login" className="px-5 py-2 border border-indigo-400 text-indigo-600 rounded">
                 Log In
               </Link>
             </div>
 
-            
+
           </form>
         </main>
 
@@ -147,7 +151,7 @@ export default function AuthPage() {
 
       {/* Right Section */}
       <section className="hidden md:flex w-full md:w-1/2 bg-gray-100 relative">
-        
+
 
         <div className="flex items-center justify-center w-full">
           <div className="max-w-lg w-full">
