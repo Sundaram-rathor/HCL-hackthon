@@ -1,16 +1,46 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type User = {
+  id?: string;
   name: string;
   email: string;
   phone: string;
   location: string;
   avatarLetter?: string;
   stats?: { appointments: number; prescriptions: number; doctors: number };
+  allergies?: string;
+  medications?: string;
 };
 
-export default function UserCard({ user }: { user: User }) {
+export default function UserCard({ user: initialUser }: { user: User }) {
+  const [user, setUser] = useState<User>(initialUser);
+  const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    // load stored profile if exists
+    try {
+      const auth = JSON.parse(localStorage.getItem("auth") || "null");
+      if (auth?.user) {
+        const stored = JSON.parse(localStorage.getItem(`profile_${auth.user.email}`) || "null");
+        if (stored) setUser(prev => ({ ...prev, ...stored }));
+      }
+    } catch (e) {}
+  }, []);
+
+  function saveProfile() {
+    try {
+      const auth = JSON.parse(localStorage.getItem("auth") || "null");
+      if (auth?.user?.email) {
+        localStorage.setItem(`profile_${auth.user.email}`, JSON.stringify(user));
+        const log = JSON.parse(localStorage.getItem("auditLog") || "[]");
+        log.push({ ts: Date.now(), event: "profile_update", user: auth.user.email });
+        localStorage.setItem("auditLog", JSON.stringify(log));
+      }
+      setEditing(false);
+    } catch (e) {}
+  }
+
   return (
     <aside className="bg-white rounded-2xl p-6 shadow-sm border">
       <div className="flex items-center gap-4">
@@ -18,9 +48,9 @@ export default function UserCard({ user }: { user: User }) {
           {user.avatarLetter || user.name?.charAt(0)?.toUpperCase() || "U"}
         </div>
 
-        <div>
-          <div className="text-lg font-semibold text-gray-900">{user.name}</div>
-          <div className="text-sm text-gray-500">{user.location}</div>
+        <div className="flex-1 min-w-0">
+          <div className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">{user.name}</div>
+          <div className="text-sm md:text-base text-gray-500">{user.location}</div>
           <div className="mt-2 text-sm text-gray-600">{user.email} · {user.phone}</div>
         </div>
       </div>
@@ -40,9 +70,29 @@ export default function UserCard({ user }: { user: User }) {
         </div>
       </div>
 
-      <div className="mt-5 flex gap-3">
-        <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-md">View Profile</button>
-        <button className="px-3 py-2 border rounded-md">Edit</button>
+      <div className="mt-5">
+        {!editing ? (
+          <>
+            <div className="text-sm text-gray-600"><strong>Allergies:</strong> {user.allergies || "Not set"}</div>
+            <div className="mt-2 text-sm text-gray-600"><strong>Medications:</strong> {user.medications || "Not set"}</div>
+            <div className="mt-4 flex gap-3">
+              <button onClick={() => setEditing(true)} className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-md">Edit</button>
+              <button onClick={() => {
+                // view audit log
+                window.location.href = "/dashboard#audit";
+              }} className="px-3 py-2 border rounded-md">Audit</button>
+            </div>
+          </>
+        ) : (
+          <div className="space-y-3">
+            <input value={user.allergies || ""} onChange={(e) => setUser({...user, allergies: e.target.value})} placeholder="Allergies (comma separated)" className="w-full px-3 py-2 border rounded-md" />
+            <input value={user.medications || ""} onChange={(e) => setUser({...user, medications: e.target.value})} placeholder="Current medications" className="w-full px-3 py-2 border rounded-md" />
+            <div className="flex gap-3">
+              <button onClick={saveProfile} className="px-3 py-2 bg-green-600 text-white rounded-md">Save</button>
+              <button onClick={() => setEditing(false)} className="px-3 py-2 border rounded-md">Cancel</button>
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

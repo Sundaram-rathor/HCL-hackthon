@@ -22,8 +22,8 @@ export default function HealthCard({ title, description, tag }: Props) {
 				</div>
 
 				<div className="flex-1 min-w-0">
-					<h3 className="text-lg font-semibold text-gray-900 truncate">{title}</h3>
-					<p className="mt-2 text-sm text-gray-600 max-h-16 overflow-hidden">
+					<h3 className="text-lg md:text-xl font-semibold tracking-tight text-gray-900 truncate">{title}</h3>
+					<p className="mt-2 text-sm md:text-base text-gray-600 max-h-16 overflow-hidden">
 						{description}
 					</p>
 

@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 import DoctorCard from "../dashboard/components/doctorCard";
 import Link from "next/link";
+import MessageModal from "../dashboard/components/messageModal";
 
 export default function ConsultationsPage() {
   const [query, setQuery] = useState("");
+  const [chatDoctor, setChatDoctor] = useState<any | null>(null);
 
   const doctors = [
     { id: 1, name: "Dr. Priya Sharma", specialty: "Pulmonologist", clinic: "City Health Clinic", rating: 4.8 },
@@ -26,17 +28,11 @@ export default function ConsultationsPage() {
       <div className="max-w-6xl mx-auto px-6">
         <header className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">New Consultation</h1>
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-gray-900">New Consultation</h1>
             <p className="text-sm text-gray-600 mt-1">Choose a doctor to start a consultation.</p>
           </div>
 
           <div className="flex items-center gap-3">
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search doctors, specialty or clinic..."
-              className="px-3 py-2 border rounded-md bg-white text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-200"
-            />
             <Link href="/dashboard" className="text-sm text-gray-600 hover:underline">Back to Dashboard</Link>
           </div>
         </header>
@@ -44,7 +40,7 @@ export default function ConsultationsPage() {
         <section>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((doc) => (
-              <DoctorCard key={doc.id} doctor={doc} />
+              <DoctorCard key={doc.id} doctor={doc} onConsult={(d) => setChatDoctor(d)} />
             ))}
 
             {filtered.length === 0 && (
@@ -53,6 +49,8 @@ export default function ConsultationsPage() {
           </div>
         </section>
       </div>
+
+      {chatDoctor && <MessageModal doctor={chatDoctor} onClose={() => setChatDoctor(null)} />}
     </div>
   );
 }

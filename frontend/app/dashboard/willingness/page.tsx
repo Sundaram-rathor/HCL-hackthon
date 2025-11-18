@@ -49,12 +49,11 @@ export default function HealthPage() {
       <div className="max-w-6xl mx-auto px-6">
         <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
           <div>
-            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight text-gray-900">
-              Health & Wellness
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-gray-900">
+              Willingness Card
             </h1>
-            <p className="mt-2 text-gray-600 max-w-xl">
-              Latest updates, prevention tips and mental health resources. Browse curated content
-              and open any topic to learn more.
+            <p className="text-sm text-gray-600">
+              Manage your consultation preferences and consent.
             </p>
             <div className="mt-4 flex flex-wrap gap-2 items-center">
               <span className="text-sm text-gray-500 mr-2">Filter:</span>
@@ -160,7 +159,7 @@ export default function HealthPage() {
           <div className="relative max-w-2xl w-full bg-white rounded-2xl shadow-xl border p-6 z-10">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-xl md:text-2xl font-extrabold tracking-tight text-gray-900">{selected.title}</h2>
+                <h2 className="text-xl font-semibold text-gray-900">{selected.title}</h2>
                 <div className="mt-2 text-sm text-gray-600">{selected.tag}</div>
               </div>
               <button
