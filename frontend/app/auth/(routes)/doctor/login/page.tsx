@@ -6,7 +6,6 @@ import Link from "next/link";
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -17,11 +16,11 @@ export default function AuthPage() {
 
     try {
       const res = await fetch(
-        (process.env.NEXT_PUBLIC_BACKEND_URI || "http://localhost:8000") + "/api/user/login",
+        ("http://localhost:8000") + "/api/doctor/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, remember }),
+          body: JSON.stringify({ email, password }),
         }
       );
 
@@ -57,7 +56,7 @@ export default function AuthPage() {
 
         <main className="mt-8 max-w-xl">
           <h1 className="text-3xl sm:text-4xl font-extrabold text-indigo-600 leading-tight">
-            Patient Login
+            Doctor Login
           </h1>
 
           <p className="mt-4 text-gray-500">
@@ -118,7 +117,7 @@ export default function AuthPage() {
               </button>
 
               <Link
-                href="/auth/user/register"
+                href="/auth/admin/register"
                 className="px-5 py-2 border border-indigo-400 text-indigo-600 rounded"
               >
                 Sign Up

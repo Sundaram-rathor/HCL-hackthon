@@ -6,8 +6,7 @@ import Link from "next/link";
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
-  const [username, setUsername] = useState("");
+  const [fullName, setfullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -18,10 +17,10 @@ export default function AuthPage() {
     setError("");
 
     try {
-      const res = await fetch((process.env.NEXT_PUBLIC_BACKEND_URI || "http://localhost:8000") + "/api/admin/register", {
+      const res = await fetch(("http://localhost:8000") + "/api/patient/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, remember, username }),
+        body: JSON.stringify({ email, password, fullName }),
       });
 
       const data = await res.json();
@@ -56,7 +55,7 @@ export default function AuthPage() {
 
         <main className="mt-8 max-w-xl">
           <h1 className="text-3xl sm:text-4xl font-extrabold text-indigo-600 leading-tight">
-            Doctor Registration
+            Patient Registration
           </h1>
 
           <p className="mt-4 text-gray-500">Register your account to get started.</p>
@@ -78,13 +77,13 @@ export default function AuthPage() {
 
             <div className="border border-gray-200 rounded-t-md overflow-hidden">
               <label className="block px-4 py-3">
-                <div className="text-sm text-gray-400">Username</div>
+                <div className="text-sm text-gray-400">fullName</div>
                 <input
                   type="text"
                   className="mt-1 w-full outline-none bg-transparent text-black"
-                  placeholder="Your Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Your fullName"
+                  value={fullName}
+                  onChange={(e) => setfullName(e.target.value)}
                   required
                 />
               </label>
@@ -132,7 +131,7 @@ export default function AuthPage() {
                 {loading ? "Signing up..." : "Sign Up"}
               </button>
 
-              <Link href="/auth/admin/login" className="px-5 py-2 border border-indigo-400 text-indigo-600 rounded">
+              <Link href="/auth/user/login" className="px-5 py-2 border border-indigo-400 text-indigo-600 rounded">
                 Log In
               </Link>
             </div>
