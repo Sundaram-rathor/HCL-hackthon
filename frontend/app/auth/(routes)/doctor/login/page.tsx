@@ -16,7 +16,7 @@ export default function AuthPage() {
 
     try {
       const res = await fetch(
-        ("http://localhost:8000") + "/api/doctor/login",
+        ("https://hcl-hackthon.vercel.app/") + "/api/doctor/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
