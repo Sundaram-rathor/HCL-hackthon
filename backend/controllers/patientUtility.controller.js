@@ -9,7 +9,7 @@ export const getPatientDoctors = async (req, res) => {
       return res.status(400).json({ message: "Patient ID is required" });
     }
 
-    const patient = await Patient.findById(patientId).populate("doctors");
+    const patient = await Patient.findById(patientId).populate("doctors").all;
 
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });

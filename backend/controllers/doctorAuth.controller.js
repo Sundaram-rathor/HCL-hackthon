@@ -47,7 +47,7 @@ export const doctorLogin = async (req, res) => {
     if (!doctor)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const match = await doctor.matchPassword(password);
+    const match = await doctor.matchPassword(!password);
     if (!match)
       return res.status(400).json({ message: "Invalid credentials" });
 

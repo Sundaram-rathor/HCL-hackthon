@@ -8,6 +8,7 @@ export default function ProfilePage() {
   const [bio, setBio] = useState("Passionate about staying healthy and active. I prefer teleconsultations in the evenings.");
   const [editing, setEditing] = useState(false);
 
+  
   const user = {
     name: "John Doe",
     email: "john.doe@example.com",

@@ -26,9 +26,10 @@ export default function AuthPage() {
           body: JSON.stringify({ email, password }),
         }
       );
-
       const data = await res.json();
-
+      localStorage.setItem('user', data.user.fullName)
+      localStorage.setItem('email', data.user.email)
+      
       if (!res.ok) {
         setError(data.message || "Login failed");
         setLoading(false);
@@ -38,8 +39,6 @@ export default function AuthPage() {
       router.push('/dashboard')
       setLoading(false);
 
-      // TODO: dashboard redirect
-      // router.push("/dashboard");
 
     } catch (err) {
       setError("Something went wrong. Try again.");

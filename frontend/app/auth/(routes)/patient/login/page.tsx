@@ -9,12 +9,12 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const router = useRouter();
 
     try {
       const res = await fetch(
@@ -36,7 +36,7 @@ export default function AuthPage() {
 
       alert("Login successful!");
       setLoading(false);
-      router.push("/")
+      router.push("/dashboard")
 
       // TODO: dashboard redirect
       // router.push("/dashboard");

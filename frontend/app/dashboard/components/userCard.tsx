@@ -25,21 +25,11 @@ export default function UserCard({ user: initialUser }: { user: User }) {
         const stored = JSON.parse(localStorage.getItem(`profile_${auth.user.email}`) || "null");
         if (stored) setUser(prev => ({ ...prev, ...stored }));
       }
-    } catch (e) {}
+    } catch (e) { }
   }, []);
 
-  function saveProfile() {
-    try {
-      const auth = JSON.parse(localStorage.getItem("auth") || "null");
-      if (auth?.user?.email) {
-        localStorage.setItem(`profile_${auth.user.email}`, JSON.stringify(user));
-        const log = JSON.parse(localStorage.getItem("auditLog") || "[]");
-        log.push({ ts: Date.now(), event: "profile_update", user: auth.user.email });
-        localStorage.setItem("auditLog", JSON.stringify(log));
-      }
-      setEditing(false);
-    } catch (e) {}
-  }
+  const name = localStorage.getItem('user')
+  const email = localStorage.getItem('email')
 
   return (
     <aside className="bg-white rounded-2xl p-6 shadow-sm border">
@@ -49,9 +39,9 @@ export default function UserCard({ user: initialUser }: { user: User }) {
         </div>
 
         <div className="flex-1 min-w-0">
-          <div className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">{user.name}</div>
+          <div className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">{name}</div>
           <div className="text-sm md:text-base text-gray-500">{user.location}</div>
-          <div className="mt-2 text-sm text-gray-600">{user.email} · {user.phone}</div>
+          <div className="mt-2 text-sm text-gray-600">{email} · {user.phone}</div>
         </div>
       </div>
 
@@ -85,10 +75,10 @@ export default function UserCard({ user: initialUser }: { user: User }) {
           </>
         ) : (
           <div className="space-y-3">
-            <input value={user.allergies || ""} onChange={(e) => setUser({...user, allergies: e.target.value})} placeholder="Allergies (comma separated)" className="w-full px-3 py-2 border rounded-md" />
-            <input value={user.medications || ""} onChange={(e) => setUser({...user, medications: e.target.value})} placeholder="Current medications" className="w-full px-3 py-2 border rounded-md" />
+            <input value={user.allergies || ""} onChange={(e) => setUser({ ...user, allergies: e.target.value })} placeholder="Allergies (comma separated)" className="w-full px-3 py-2 border rounded-md" />
+            <input value={user.medications || ""} onChange={(e) => setUser({ ...user, medications: e.target.value })} placeholder="Current medications" className="w-full px-3 py-2 border rounded-md" />
             <div className="flex gap-3">
-              <button onClick={saveProfile} className="px-3 py-2 bg-green-600 text-white rounded-md">Save</button>
+              <button className="px-3 py-2 bg-green-600 text-white rounded-md">Save</button>
               <button onClick={() => setEditing(false)} className="px-3 py-2 border rounded-md">Cancel</button>
             </div>
           </div>
